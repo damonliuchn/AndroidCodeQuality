@@ -1,0 +1,77 @@
+apply plugin: 'checkstyle'
+apply plugin: 'findbugs'
+apply plugin: 'pmd'
+
+preBuild.dependsOn 'checkstyle','pmd'
+
+task checkstyle(type: Checkstyle) {
+    ignoreFailures = true
+    configFile file("${project.projectDir}/doc/quality/platform/checkstyle/checkstyle.xml")
+    
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**', '**/test/**'
+
+    classpath = files()
+}
+
+tasks.withType(Checkstyle).each { checkstyleTask ->
+    checkstyleTask.doLast {
+        reports.all { report ->
+            def outputFile = report.destination
+            if (outputFile.exists() && outputFile.text.contains("<error ") && !checkstyleTask.ignoreFailures) {
+                throw new GradleException("There were checkstyle warnings! For more info check $outputFile")
+            }
+        }
+    }
+}
+
+task pmd(type: Pmd) {
+    ignoreFailures = true
+    ruleSetFiles = files("${project.projectDir}/doc/quality/platform/pmd/pmd-ruleset.xml")
+    ruleSets = []
+
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}
+
+task findbugs(type: FindBugs) {
+    ignoreFailures = true
+    excludeFilter = new File("${project.projectDir}/doc/quality/platform/findbugs/findbugs-filter.xml")
+    effort = "max"
+    reportLevel = "high"
+    classes = files("$project.buildDir/intermediates/classes")
+
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+
+    reports {
+        xml.enabled = false
+        html.enabled = true
+        xml {
+            destination "$project.buildDir/reports/findbugs/findbugs.xml"
+            xml.withMessages true
+        }
+        html {
+            destination "$project.buildDir/reports/findbugs/findbugs.html"
+        }
+    }
+    classpath = files()
+}
+
+afterEvaluate {
+    tasks.withType(Task).each { task ->
+        task.doLast {
+            if(task.name.startsWith("assemble")){
+                tasks.findByName("findbugs").execute()
+            }
+        }
+    }
+}
