@@ -6,6 +6,14 @@ When run "gradle assembleXX" or build your app,it will auto check the code quali
 
 2.You can config 'ignoreFailures = false' to force stop your build task. This will force you to optimize your code.
 
+中文:
+
+1、在 build工程之前使用checkstyle,pmd自动检查代码。
+
+2、 assemble task 执行完后自动跑一遍findbugs,从代码源头上检查代码。
+
+3、可以设置'ignoreFailures = false',当检查到错误后会强制停止当前的 build task,需要改正后才能重新 build,这样就强制保证了代码质量。
+
 #Usage: 
 1、copy the /doc folder to your_android_studio_project/app/
 
