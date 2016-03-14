@@ -12,7 +12,7 @@ When run "gradle assembleXX" or build your app,it will auto check the code quali
 
 2、 assemble task 执行完后自动跑一遍findbugs,从代码源头上检查代码。
 
-3、可以设置'ignoreFailures = false',当检查到错误后会强制停止当前的 build task,需要改正后才能重新 build,这样就强制保证了代码质量。
+3、可以设置'ignoreFailures = false',当检查到错误后会强制停止当前的 build task,需要改正后才能重新 build,这样就强制保证了代码质量。ignoreFailures 的配置在 'your_android_studio_project/app/doc/quality/quality.gradle' 这个文件里。
 
 #Usage: 
 1、copy the /doc folder to your_android_studio_project/app/
