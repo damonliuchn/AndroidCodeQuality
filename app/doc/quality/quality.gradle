@@ -5,7 +5,7 @@ apply plugin: 'pmd'
 preBuild.dependsOn 'checkstyle','pmd'
 
 task checkstyle(type: Checkstyle) {
-    ignoreFailures = true
+    ignoreFailures = false
     configFile file("${project.projectDir}/doc/quality/platform/checkstyle/checkstyle.xml")
     
     source 'src'
