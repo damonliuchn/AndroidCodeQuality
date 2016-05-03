@@ -14,12 +14,22 @@ When run "gradle assembleXX" or build your app,it will auto check the code quali
 
 3、可以设置'ignoreFailures = false',当检查到错误后会强制停止当前的 build task,需要改正后才能重新 build,这样就强制保证了代码质量。ignoreFailures 的配置在 'your_android_studio_project/app/doc/quality/quality.gradle' 这个文件里。
 
+4、可以添加忽略文件（夹）,在quality.gradle 文件里配置：
+```java
+    exclude '**/gen/**', '**/test/**','**/LauncherActivity.java'
+```
+
 #Usage: 
 1、copy the /doc folder to your_android_studio_project/app/
 
 2、input "apply from: './doc/quality/quality.gradle'" to your build.gradle in your_android_studio_project/app. 
 
 3、run your app or gradle assembleXX,this gradle script will auto check the code quality.
+
+4、ignore file or folder in quality.gradle：
+```java
+    exclude '**/gen/**', '**/test/**','**/LauncherActivity.java'
+```
 
 #To go further
 -------------
